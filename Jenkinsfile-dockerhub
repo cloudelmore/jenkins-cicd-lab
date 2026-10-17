@@ -4,7 +4,7 @@ pipeline {
 
     environment {
         // Your Docker Hub username (not a secret). The password/token lives in Jenkins credentials.
-        DOCKERHUB_USER = "yourdockerhubusername"
+        DOCKERHUB_USER = "gflounder"
         IMAGE          = "${DOCKERHUB_USER}/jenkins-demo"
     }
 
