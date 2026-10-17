@@ -1,0 +1,6 @@
+.git
+.gitignore
+terraform/
+Jenkinsfile*
+__pycache__/
+.pytest_cache/

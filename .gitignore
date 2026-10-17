@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# Terraform working files and state
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+
+# SSH keys and secrets (never commit these)
+jenkins-key
+jenkins-key.pub
+*.pem
+.env

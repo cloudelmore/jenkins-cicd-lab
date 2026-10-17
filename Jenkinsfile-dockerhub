@@ -1,0 +1,44 @@
+// Action Step 6: Build a Docker image and push it to Docker Hub
+pipeline {
+    agent any
+
+    environment {
+        // Your Docker Hub username (not a secret). The password/token lives in Jenkins credentials.
+        DOCKERHUB_USER = "yourdockerhubusername"
+        IMAGE          = "${DOCKERHUB_USER}/jenkins-demo"
+    }
+
+    stages {
+        stage('Build Image') {
+            steps {
+                sh 'docker build -t $IMAGE:$BUILD_NUMBER -t $IMAGE:latest .'
+            }
+        }
+
+        stage('Test Image') {
+            steps {
+                sh 'docker run --rm $IMAGE:$BUILD_NUMBER python -m pytest -v'
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds',
+                                                  usernameVariable: 'DH_USER',
+                                                  passwordVariable: 'DH_TOKEN')]) {
+                    sh '''
+                        echo "$DH_TOKEN" | docker login -u "$DH_USER" --password-stdin
+                        docker push $IMAGE:$BUILD_NUMBER
+                        docker push $IMAGE:latest
+                    '''
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            sh 'docker logout || true'
+        }
+    }
+}
