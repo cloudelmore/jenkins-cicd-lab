@@ -33,11 +33,9 @@ pipeline {
         }
     }
 
-    post {
+        post {
         success {
-                    success {
             sh 'echo "Deployed. Browse to http://$(curl -s https://checkip.amazonaws.com)/"'
-        }
         }
         failure {
             echo "Pipeline failed. Check the stage logs above."
